@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hellospring-deployment
+  labels:
+    app: hellospring-java-app
+  namespace: java-apps
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hellospring-java-app
+  template:
+    metadata:
+      labels:
+        app: hellospring-java-app
+    spec:
+      containers:
+        - name: hellospring-java-app
+          image: docker.io/pranshuc1/hellospring:1.0.0
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http

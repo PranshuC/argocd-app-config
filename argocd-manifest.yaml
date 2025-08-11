@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: myapp-argo-application
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/PranshuC/argocd-app-config.git
+    targetRevision: HEAD
+    path: dev
+  destination:
+    # Target the in-cluster Kubernetes API server. (kubectl get svc)
+    server: https://kubernetes.default.svc
+    namespace: myapp
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true # Create the namespace if it does not exist
+
+    # Polls Git repo for changes every 3 minutes
+    automated:
+      selfHeal: true # Automatically sync changes
+      prune: true # Automatically delete resources that are no longer defined in the Git repo
